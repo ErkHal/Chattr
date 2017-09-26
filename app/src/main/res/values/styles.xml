@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Main app theme -->
-    <style name="Chattr" parent="android:Theme.DeviceDefault.Dialog.NoActionBar" >
+    <style name="Chattr" parent="android:Theme.NoTitleBar" >
         <item name="android:colorForeground">@color/foreground_material_dark</item>
         <item name="android:colorPrimaryDark">@color/primary_dark_material_dark</item>
         <item name="android:colorPrimary">@color/primary_material_dark</item>

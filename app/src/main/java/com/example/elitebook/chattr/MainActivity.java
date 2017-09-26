@@ -1,45 +1,80 @@
 package com.example.elitebook.chattr;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.elitebook.chattr.ChatServerIO.ConversationUpdater;
-import com.example.elitebook.chattr.ChatServerIO.MessageSender;
-
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.net.Socket;
+import com.example.elitebook.chattr.ChatServerIO.ChatServerCommunicationHandler;
 
 public class MainActivity extends AppCompatActivity {
-
-    //Streams and socket
-    PrintStream clientOutput = null;
-    InputStream clientInput = null;
-    Socket clientSocket;
 
     //Chat box, message box and button
     TextView convoWindow;
     EditText messageBox;
     Button sendMessageButton;
-
-    //I/O handlers
-    ConversationUpdater convoUpdater;
-    MessageSender messageSender;
+    ChatServerCommunicationHandler chatHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Initialize the I/O handler and pass it this activity as parameter
+        chatHandler = new ChatServerCommunicationHandler(this);
+
         //Tie layout elements into code
         convoWindow = (TextView) findViewById(R.id.convoWindow);
         messageBox = (EditText) findViewById(R.id.messageBox);
         sendMessageButton = (Button) findViewById(R.id.sendButton);
 
+        //onClick listener for the SEND button
+        sendMessageButton.setOnClickListener(new View.OnClickListener() {
+                                                 @Override
+                                                 public void onClick(View view) {
+
+                                                     String message = messageBox.getText().toString();
+                                                     sendMessageToHandler(message);
+
+                                                     //Clears the box after sending the message
+                                                     messageBox.getText().clear();
+                                                 }
+                                             });
+
+        //Initialize Handler thread for setting up I/O and server connection
+        Thread handlerThread = new Thread(chatHandler);
+        handlerThread.start();
+
+    }
+
+    /**
+     * Adds new message to the textview
+     * @param newMessage message to be added into the conversation
+     */
+    public void appendMessageToConversation(String newMessage) {
+
+        convoWindow.append(newMessage);
+    }
+
+    /**
+     * Sends the message to chat handler thread
+     * @param msg
+     */
+    public void sendMessageToHandler(String msg) {
+
+        chatHandler.sendMessageToQueue(msg);
+
+    }
+
+    /**
+     * Toggle send button disabled before connection to the server is established
+     * @param state
+     */
+    public void toggleAllUiElements(boolean state) {
+
+        //TODO: Disable elements before connection is made, and then enable again.
 
     }
 }
