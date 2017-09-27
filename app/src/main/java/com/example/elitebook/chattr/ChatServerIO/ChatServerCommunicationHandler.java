@@ -23,14 +23,21 @@ public class ChatServerCommunicationHandler implements Runnable {
     private ConversationUpdater reader;
     private MessageSender sender;
 
+    //Ip address and port number
+    private String ipAddress;
+    private int portNumber;
+
     MainActivity mainActivity;
 
     boolean setupDone;
 
-    public ChatServerCommunicationHandler(MainActivity main) {
+    public ChatServerCommunicationHandler(MainActivity main, String ipAddr, int portNumber) {
 
         this.setupDone = false;
         this.mainActivity = main;
+
+        this.ipAddress = ipAddr;
+        this.portNumber = portNumber;
 
     }
 
@@ -70,7 +77,7 @@ public class ChatServerCommunicationHandler implements Runnable {
 
         try {
 
-            clientSocket = new Socket(SERVER_IP, SERVER_PORT);
+            clientSocket = new Socket(this.ipAddress, this.portNumber);
             return true;
 
         } catch (IOException io) {

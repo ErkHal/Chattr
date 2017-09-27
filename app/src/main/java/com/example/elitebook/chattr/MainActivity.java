@@ -1,8 +1,10 @@
 package com.example.elitebook.chattr;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,8 +29,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent serverConnectIntent = new Intent(this, selectServerActivity.class);
+        startActivityForResult(serverConnectIntent, 0);
+
+    }
+
+    /**
+     * Resumes the connection setup after address propmting
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Intent inputIntent = getIntent();
+        Log.d("address", inputIntent.toString());
+        String ipAddress = inputIntent.getStringExtra("IP_ADDRESS");
+        int portNumber = inputIntent.getIntExtra("PORT_NUMBER", 1337);
+        Log.d("address", "ip: " + ipAddress + " port: " + portNumber);
+
         //Initialize the I/O handler and pass it this activity as parameter
-        chatHandler = new ChatServerCommunicationHandler(this);
+        chatHandler = new ChatServerCommunicationHandler(this, ipAddress, portNumber);
 
         //Tie layout elements into code
         convoWindow = (TextView) findViewById(R.id.convoWindow);
@@ -39,17 +60,17 @@ public class MainActivity extends AppCompatActivity {
 
         //onClick listener for the SEND button
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
 
-                                                     String message = messageBox.getText().toString();
-                                                     String converted = StringEscapeUtils.escapeJava(message);
-                                                     sendMessageToHandler(converted);
+                String message = messageBox.getText().toString();
+                String converted = StringEscapeUtils.escapeJava(message);
+                sendMessageToHandler(converted);
 
-                                                     //Clears the box after sending the message
-                                                     messageBox.getText().clear();
-                                                 }
-                                             });
+                //Clears the box after sending the message
+                messageBox.getText().clear();
+            }
+        });
 
         //Initialize Handler thread for setting up I/O and server connection
         Thread handlerThread = new Thread(chatHandler);
