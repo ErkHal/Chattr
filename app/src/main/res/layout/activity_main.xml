@@ -44,10 +44,16 @@
         android:layout_width="343dp"
         android:layout_height="508dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="8dp"
         android:weightSum="1"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/messageBox">
+        app:layout_constraintBottom_toTopOf="@+id/messageBox"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="1.0">
 
         <ScrollView
             android:id="@+id/scrollViewForConversation"

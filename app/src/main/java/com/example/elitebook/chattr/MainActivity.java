@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.elitebook.chattr.ChatServerIO.ChatServerCommunicationHandler;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 public class MainActivity extends AppCompatActivity {
 
     //Chat box, message box and button
@@ -41,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
                                                  public void onClick(View view) {
 
                                                      String message = messageBox.getText().toString();
-                                                     sendMessageToHandler(message);
+                                                     String converted = StringEscapeUtils.escapeJava(message);
+                                                     sendMessageToHandler(converted);
 
                                                      //Clears the box after sending the message
                                                      messageBox.getText().clear();
@@ -60,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public void appendMessageToConversation(String newMessage) {
 
-        convoWindow.append(newMessage);
+        String converted = StringEscapeUtils.unescapeJava(newMessage);
+        convoWindow.append(converted);
 
         scrollDown();
     }
