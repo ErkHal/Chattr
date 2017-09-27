@@ -1,10 +1,6 @@
 package com.example.elitebook.chattr.ChatServerIO;
 
 import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
-
-import com.example.elitebook.chattr.MainActivity;
 
 import java.io.PrintStream;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -20,16 +16,11 @@ import static android.content.ContentValues.TAG;
 public class MessageSender implements Runnable {
 
     private ArrayBlockingQueue<String> messageQueue;
-    private EditText messageBox;
-    private Button sendButton;
     private PrintStream output;
-    private boolean messageWasSent;
-    private MainActivity mainActivity;
 
     public MessageSender(PrintStream outputStream) {
 
         this.output = outputStream;
-        this.messageWasSent = false;
         this.messageQueue = new ArrayBlockingQueue<>(10);
 
     }
@@ -48,13 +39,16 @@ public class MessageSender implements Runnable {
      */
     public void run() {
 
-        try {
-            String newestMessage = this.messageQueue.take();
-            sendMessage(newestMessage);
+        while(true) {
 
-        } catch(InterruptedException i) {
-            Log.d(TAG, "ERROR WHILE ACCESSING MESSAGE BLOCKING QUEUE");
-            i.printStackTrace();
+            try {
+                String newestMessage = this.messageQueue.take();
+                sendMessage(newestMessage);
+
+            } catch (InterruptedException i) {
+                Log.d(TAG, "ERROR WHILE ACCESSING MESSAGE BLOCKING QUEUE");
+                i.printStackTrace();
+            }
         }
     }
 

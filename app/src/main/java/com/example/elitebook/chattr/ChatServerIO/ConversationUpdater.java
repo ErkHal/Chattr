@@ -31,7 +31,7 @@ public class ConversationUpdater implements Runnable {
             mainActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mainActivity.appendMessageToConversation(message);
+                    mainActivity.appendMessageToConversation(message + "\r\n");
                 }
             });
 
