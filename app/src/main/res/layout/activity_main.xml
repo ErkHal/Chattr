@@ -10,6 +10,7 @@
     <!-- User input elements -->
     <Button
         android:id="@+id/sendButton"
+        android:elevation="8dp"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginBottom="8dp"
@@ -28,6 +29,7 @@
 
     <EditText
         android:id="@+id/messageBox"
+        android:elevation="6dp"
         android:textColor="@color/textview_Font"
         android:layout_width="295dp"
         android:layout_height="32dp"
@@ -40,6 +42,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="16dp" />
 
+    <!-- Scrollable conversation window -->
     <LinearLayout
         android:layout_width="343dp"
         android:layout_height="508dp"
