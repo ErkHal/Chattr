@@ -29,24 +29,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent serverConnectIntent = new Intent(this, selectServerActivity.class);
-        startActivityForResult(serverConnectIntent, 0);
+        /*Intent serverConnectIntent = new Intent(this, selectServerActivity.class);
+        startActivityForResult(serverConnectIntent, 0); */
 
-    }
-
-    /**
-     * Resumes the connection setup after address propmting
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        Intent inputIntent = getIntent();
-        Log.d("address", inputIntent.toString());
-        String ipAddress = inputIntent.getStringExtra("IP_ADDRESS");
-        int portNumber = inputIntent.getIntExtra("PORT_NUMBER", 1337);
+        Intent intent = getIntent();
+        Log.d("address", intent.toString());
+        String ipAddress = intent.getStringExtra("IP_ADDRESS");
+        int portNumber = intent.getIntExtra("PORT_NUMBER", 1337);
         Log.d("address", "ip: " + ipAddress + " port: " + portNumber);
+
+        //String ipAddress = serverConnectionInformation.getInstance().getServerIp();
+        //int portNumber = serverConnectionInformation.getInstance().getServerPort();
 
         //Initialize the I/O handler and pass it this activity as parameter
         chatHandler = new ChatServerCommunicationHandler(this, ipAddress, portNumber);
@@ -76,7 +69,50 @@ public class MainActivity extends AppCompatActivity {
         Thread handlerThread = new Thread(chatHandler);
         handlerThread.start();
 
+
     }
+
+    /*@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Intent intent = getIntent();
+        Log.d("address", data.toString());
+        String ipAddress = data.getStringExtra("IP_ADDRESS");
+        int portNumber = data.getIntExtra("PORT_NUMBER", 1337);
+        Log.d("address", "ip: " + ipAddress + " port: " + portNumber);
+
+        //String ipAddress = serverConnectionInformation.getInstance().getServerIp();
+        //int portNumber = serverConnectionInformation.getInstance().getServerPort();
+
+        //Initialize the I/O handler and pass it this activity as parameter
+        chatHandler = new ChatServerCommunicationHandler(this, ipAddress, portNumber);
+
+        //Tie layout elements into code
+        convoWindow = (TextView) findViewById(R.id.convoWindow);
+        convoWindow.setMovementMethod(new ScrollingMovementMethod());
+        messageBox = (EditText) findViewById(R.id.messageBox);
+        sendMessageButton = (Button) findViewById(R.id.sendButton);
+        scrollView = (ScrollView) findViewById(R.id.scrollViewForConversation);
+
+        //onClick listener for the SEND button
+        sendMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String message = messageBox.getText().toString();
+                String converted = StringEscapeUtils.escapeJava(message);
+                sendMessageToHandler(converted);
+
+                //Clears the box after sending the message
+                messageBox.getText().clear();
+            }
+        });
+
+        //Initialize Handler thread for setting up I/O and server connection
+        Thread handlerThread = new Thread(chatHandler);
+        handlerThread.start();
+
+    } */
 
     /**
      * Adds new message to the textview

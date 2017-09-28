@@ -41,8 +41,9 @@ public class selectServerActivity extends AppCompatActivity {
         int portNumber = Integer.parseInt(portNumberField.getText().toString());
         Log.d("address", ipAddress + " | " + portNumber);
 
-        //serverConnectionInformation.getInstance().setServerIP(ipAddress);
-        //serverConnectionInformation.getInstance().setPortNumber(portNumber);
+        //Prototype version, trying to pass information via singleton class
+        serverConnectionInformation.getInstance().setServerIP(ipAddress);
+        serverConnectionInformation.getInstance().setPortNumber(portNumber);
 
         Intent backToMainIntent = new Intent(this, MainActivity.class);
         backToMainIntent.putExtra("IP_ADDRESS", ipAddress);
