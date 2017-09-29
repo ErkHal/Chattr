@@ -21,6 +21,7 @@ public class selectServerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_server);
+        
 
         goButton = (Button) findViewById(R.id.go_button);
         ipAddressField = (EditText) findViewById(R.id.ip_address);
@@ -40,10 +41,6 @@ public class selectServerActivity extends AppCompatActivity {
         String ipAddress = String.valueOf(ipAddressField.getText().toString());
         int portNumber = Integer.parseInt(portNumberField.getText().toString());
         Log.d("address", ipAddress + " | " + portNumber);
-
-        //Prototype version, trying to pass information via singleton class
-        serverConnectionInformation.getInstance().setServerIP(ipAddress);
-        serverConnectionInformation.getInstance().setPortNumber(portNumber);
 
         Intent backToMainIntent = new Intent(this, MainActivity.class);
         backToMainIntent.putExtra("IP_ADDRESS", ipAddress);
