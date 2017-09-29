@@ -41,21 +41,39 @@ public class ChatServerCommunicationHandler implements Runnable {
 
     }
 
+    /**
+     * Sets up the connections to server. If connecting fails, displays a message in the chat window and doesn't do anything else
+     */
     public void run() {
 
         while(true) {
 
             if(!setupDone) {
-                connectToServer();
-                setupStreams();
+                boolean connection = connectToServer();
+                if(connection) {
+                    setupStreams();
 
-                Thread senderThread = new Thread(sender);
-                Thread updaterThread = new Thread(reader);
+                    Thread senderThread = new Thread(sender);
+                    Thread updaterThread = new Thread(reader);
 
-                senderThread.start();
-                updaterThread.start();
+                    senderThread.start();
+                    updaterThread.start();
 
-                setupDone = true;
+                    setupDone = true;
+
+                } else {
+
+                    mainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mainActivity.disableSendButton();
+                        }
+                    });
+                    reader = new ConversationUpdater(System.in, mainActivity);
+                    reader.appendMessage("Cannot connect to host ! Please try again after a while or try another address and port number !");
+                    while(true) {}
+                }
+
             }
         }
     }
@@ -70,8 +88,8 @@ public class ChatServerCommunicationHandler implements Runnable {
     }
 
     /**
-     * Connects to the chat server
-     * @return
+     * Connects to the chat server using the provided ip and port number
+     * @return True if connection established, otherwise False
      */
     private boolean connectToServer(){
 
@@ -81,6 +99,7 @@ public class ChatServerCommunicationHandler implements Runnable {
             return true;
 
         } catch (IOException io) {
+            io.printStackTrace();
             return false;
         }
     }

@@ -106,4 +106,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Disables the send button if connection wasn't acquired
+     */
+    public void disableSendButton() {
+
+        sendMessageButton.setEnabled(false);
+    }
 }

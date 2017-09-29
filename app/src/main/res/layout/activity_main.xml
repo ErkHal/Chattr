@@ -8,97 +8,96 @@
     android:background="@color/chat_background">
 
     <!-- User input elements -->
-    <Button
-        android:id="@+id/sendButton"
-        android:elevation="8dp"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/ic_send"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toRightOf="@+id/messageBox"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/messageBox"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/messageBox"
-        android:elevation="6dp"
-        android:textColor="@color/textview_Font"
-        android:layout_width="295dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:background="@color/message_box__background"
-        android:visibility="visible"
-        android:paddingLeft="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ScrollView
+        android:id="@+id/scrollViewForConversation"
+        android:layout_width="354dp"
+        android:layout_height="477dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="16dp" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2">
 
-    <!-- Scrollable conversation window -->
-    <LinearLayout
-        android:layout_width="343dp"
-        android:layout_height="508dp"
-        android:orientation="vertical"
-        android:weightSum="1"
+        <!-- Scrollable conversation window -->
+        <TextView
+            android:id="@+id/convoWindow"
+            android:layout_width="343dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/conversation_window"
+            android:fontFamily="sans-serif"
+            android:gravity="bottom"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbars="vertical"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/textview_Font"
+            android:textColorLink="@color/textview_Font"
+            android:verticalScrollbarPosition="right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.145" />
+
+    </ScrollView>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="356dp"
+        android:layout_height="66dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="3dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/messageBox">
+        android:id="@+id/messageBoxAndButtonConstraint">
 
-        <ScrollView
-            android:id="@+id/scrollViewForConversation"
-            android:layout_width="344dp"
-            android:layout_gravity="center"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="7dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="7dp"
+        <EditText
+            android:id="@+id/messageBox"
+            android:layout_width="308dp"
+            android:layout_height="42dp"
+            android:layout_marginBottom="11dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/message_box__background"
+            android:elevation="6dp"
+            android:paddingLeft="20dp"
+            android:textColor="@color/textview_Font"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/messageBox"
-            app:layout_constraintLeft_toLeftOf="parent"
+            tools:layout_editor_absoluteX="5dp"
+            app:layout_constraintVertical_bias="0.8" />
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="36dp"
+            android:layout_height="31dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/ic_send"
+            android:elevation="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@+id/messageBox"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/convoWindow"
-                android:fontFamily="sans-serif"
-                android:layout_width="343dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/conversation_window"
-                android:gravity="bottom"
-                android:scrollbarAlwaysDrawVerticalTrack="true"
-                android:scrollbars="vertical"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:textColor="@color/textview_Font"
-                android:textColorLink="@color/textview_Font"
-                android:verticalScrollbarPosition="right"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.533"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.145" />
-
-        </ScrollView>
-    </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintVertical_bias="0.526" />
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

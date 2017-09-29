@@ -22,19 +22,30 @@ public class ConversationUpdater implements Runnable {
         this.mainActivity = main;
     }
 
+    /**
+     * Reads inputStream for strings, and appends them to the conversation window
+     */
     public void run() {
 
         while(updateRunning) {
 
-            final String message = reader.nextLine();
+            final String msg = reader.nextLine();
 
-            mainActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mainActivity.appendMessageToConversation(message + "\r\n");
-                }
-            });
-
+            appendMessage(msg);
         }
+    }
+
+    /**
+     * Appends the message to the conversation window using UI thread
+     * @param message
+     */
+    public void appendMessage(final String message) {
+
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mainActivity.appendMessageToConversation(message + "\r\n");
+            }
+        });
     }
 }
