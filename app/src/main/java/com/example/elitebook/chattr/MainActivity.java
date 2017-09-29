@@ -31,11 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Log.d("address", intent.toString());
+        //Retrieve Extra data passed from the server selection activity
         String ipAddress = intent.getStringExtra("IP_ADDRESS");
         int portNumber = intent.getIntExtra("PORT_NUMBER", 1337);
         Log.d("address", "ip: " + ipAddress + " port: " + portNumber);
 
-        //Initialize the I/O handler and pass it this activity as parameter
+        //Initialize the I/O handler and pass it this current activity as parameter
         chatHandler = new ChatServerCommunicationHandler(this, ipAddress, portNumber);
 
         //Tie layout elements into code
@@ -93,15 +94,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Toggle send button disabled before connection to the server is established
-     * @param state
+     * Scrolls the chat window down when new message is added
      */
-    public void toggleAllUiElements(boolean state) {
-
-        //TODO: Disable elements before connection is made, and then enable again.
-
-    }
-
     private void scrollDown() {
 
         scrollView.post(new Runnable() {
