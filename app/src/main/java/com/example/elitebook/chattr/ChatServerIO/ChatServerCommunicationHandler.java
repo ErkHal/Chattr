@@ -13,9 +13,6 @@ import java.net.Socket;
 
 public class ChatServerCommunicationHandler implements Runnable {
 
-    private final String SERVER_IP = "192.168.43.234";
-    private final int SERVER_PORT = 1337;
-
     //Socket for connecting to the server
     private Socket clientSocket;
 
