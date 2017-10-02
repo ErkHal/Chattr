@@ -30,7 +30,9 @@ public class ConversationUpdater implements Runnable {
 
         while (updateRunning) {
 
-            final String msg = reader.nextLine();
+            final String temp = reader.nextLine();
+
+            final String msg = temp.trim();
 
             char separator = '£';
 
@@ -40,24 +42,6 @@ public class ConversationUpdater implements Runnable {
             if (msg.contains("" + separator)) {
 
                 String[] separatedMsg;
-
-                /*int firstSeparator = 0;
-                int secondSeparator = 0;
-
-                for (int firstIndex = 0; firstIndex < msg.length(); firstIndex++) {
-
-                    if (msg.charAt(firstIndex) == separator) {
-
-                        firstSeparator = firstIndex;
-
-                        for (int i = firstIndex; i < msg.length(); i++) {
-
-                            if (msg.charAt(i) == separator)
-                                secondSeparator = i;
-                            break;
-                        }
-                    }
-                } */
 
                 separatedMsg = msg.split("£", 3);
 
@@ -73,7 +57,7 @@ public class ConversationUpdater implements Runnable {
             } else {
 
                 //The message printed is a system message
-                appendMessage(new ChatMessage(null, null, msg, true));
+                appendMessage(new ChatMessage(null, null, msg, false));
             }
         }
     }
