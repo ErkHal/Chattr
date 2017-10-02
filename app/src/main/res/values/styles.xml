@@ -11,4 +11,12 @@
         <item name="android:colorAccent">@color/accent_material_dark</item>
     </style>
 
+    <!-- Chat bubble style -->
+    <style name="other_user_chatbubble" parent="android:Theme.NoTitleBar">
+        <item name="android:radius">5dp</item>
+        <item name="android:background">@drawable/chat_bubble_others</item>
+        <item name="android:width">50dp</item>
+        <item name="android:height">20dp</item>
+
+    </style>
 </resources>

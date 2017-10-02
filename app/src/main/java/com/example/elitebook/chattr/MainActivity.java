@@ -3,14 +3,17 @@ package com.example.elitebook.chattr;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.elitebook.chattr.ChatServerIO.ChatMessage.ChatMessage;
 import com.example.elitebook.chattr.ChatServerIO.ChatServerCommunicationHandler;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -40,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         chatHandler = new ChatServerCommunicationHandler(this, ipAddress, portNumber);
 
         //Tie layout elements into code
-        convoWindow = (TextView) findViewById(R.id.convoWindow);
-        convoWindow.setMovementMethod(new ScrollingMovementMethod());
+        //convoWindow = (TextView) findViewById(R.id.convoWindow);
+        //convoWindow.setMovementMethod(new ScrollingMovementMethod());
         messageBox = (EditText) findViewById(R.id.messageBox);
         sendMessageButton = (Button) findViewById(R.id.sendButton);
         scrollView = (ScrollView) findViewById(R.id.scrollViewForConversation);
@@ -64,17 +67,37 @@ public class MainActivity extends AppCompatActivity {
         Thread handlerThread = new Thread(chatHandler);
         handlerThread.start();
 
-
     }
 
     /**
-     * Adds new message to the textview
-     * @param newMessage message to be added into the conversation
+     * Adds new chat bubble to the textview
+     * @param msg ChatMessage to be added into the conversation
      */
-    public void appendMessageToConversation(String newMessage) {
+    public void appendMessageToConversation(ChatMessage msg) {
 
-        String converted = StringEscapeUtils.unescapeJava(newMessage);
-        convoWindow.append(converted);
+        final LinearLayout conversation = (LinearLayout) findViewById(R.id.linearConversation);
+        TextView chatBubble = new TextView(getApplicationContext());
+        String converted = StringEscapeUtils.unescapeJava(msg.getMessage());
+
+        conversation.addView(chatBubble);
+        chatBubble.setTextAppearance(R.style.other_user_chatbubble);
+        chatBubble.setText(converted);
+        LinearLayout.LayoutParams textViewParams = (LinearLayout.LayoutParams) chatBubble.getLayoutParams();
+        textViewParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        textViewParams.width = 400;
+        textViewParams.topMargin = 50;
+        if(msg.isOwnMessage()) {
+
+            textViewParams.gravity = Gravity.RIGHT;
+
+        } else {
+
+            textViewParams.gravity = Gravity.LEFT;
+        }
+        chatBubble.setLayoutParams(textViewParams);
+        chatBubble.setBackgroundResource(R.drawable.chat_bubble_others);
+
+        //convoWindow.append(converted);
 
         scrollDown();
     }
