@@ -30,50 +30,40 @@ public class ConversationUpdater implements Runnable {
 
         while (updateRunning) {
 
-            final String msg = reader.nextLine();
+            final String temp = reader.nextLine();
 
-            char separator = '£';
+            final String msg = temp.trim();
 
-            ChatMessage chatMessage;
-            boolean isOwnMessage = false;
+            if(!msg.isEmpty()) {
 
-            if (msg.contains("" + separator)) {
+                char separator = '£';
 
-                String[] separatedMsg;
+                ChatMessage chatMessage;
+                boolean isOwnMessage = false;
 
-                /*int firstSeparator = 0;
-                int secondSeparator = 0;
+                if (msg.contains("" + separator)) {
 
-                for (int firstIndex = 0; firstIndex < msg.length(); firstIndex++) {
+                    String[] separatedMsg;
 
-                    if (msg.charAt(firstIndex) == separator) {
+                    separatedMsg = msg.split("£", 3);
 
-                        firstSeparator = firstIndex;
-
-                        for (int i = firstIndex; i < msg.length(); i++) {
-
-                            if (msg.charAt(i) == separator)
-                                secondSeparator = i;
-                            break;
-                        }
+                    //Checks if the message sent from the server was originally sent by this user.
+                    if (separatedMsg[1].equals("OWN_MESSAGE")) {
+                        separatedMsg[1] = "You";
+                        isOwnMessage = true;
                     }
-                } */
 
-                separatedMsg = msg.split("£", 3);
+                    separatedMsg[1] += " :";
 
-                //Checks if the message sent from the server was originally sent by this user.
-                if(separatedMsg[1].equals("OWN_MESSAGE")) {
-                    isOwnMessage = true;
+                    //Create the message
+                    chatMessage = new ChatMessage(separatedMsg[1], separatedMsg[0], separatedMsg[2], isOwnMessage);
+                    appendMessage(chatMessage);
+
+                } else {
+
+                    //The message printed is a system message
+                    appendMessage(new ChatMessage("", "", msg, false));
                 }
-
-                //The message is a user-sent message
-                chatMessage = new ChatMessage(separatedMsg[1], separatedMsg[0], separatedMsg[2], isOwnMessage);
-                appendMessage(chatMessage);
-
-            } else {
-
-                //The message printed is a system message
-                appendMessage(new ChatMessage(null, null, msg, true));
             }
         }
     }

@@ -21,7 +21,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 public class MainActivity extends AppCompatActivity {
 
     //Chat box, message box and button
-    TextView convoWindow;
     EditText messageBox;
     Button sendMessageButton;
     ChatServerCommunicationHandler chatHandler;
@@ -42,9 +41,7 @@ public class MainActivity extends AppCompatActivity {
         //Initialize the I/O handler and pass it this current activity as parameter
         chatHandler = new ChatServerCommunicationHandler(this, ipAddress, portNumber);
 
-        //Tie layout elements into code
-        //convoWindow = (TextView) findViewById(R.id.convoWindow);
-        //convoWindow.setMovementMethod(new ScrollingMovementMethod());
+        //Tie UI elements into java
         messageBox = (EditText) findViewById(R.id.messageBox);
         sendMessageButton = (Button) findViewById(R.id.sendButton);
         scrollView = (ScrollView) findViewById(R.id.scrollViewForConversation);
@@ -80,24 +77,28 @@ public class MainActivity extends AppCompatActivity {
         String converted = StringEscapeUtils.unescapeJava(msg.getMessage());
 
         conversation.addView(chatBubble);
-        chatBubble.setTextAppearance(R.style.other_user_chatbubble);
-        chatBubble.setText(converted);
+        chatBubble.setText(msg.getTimeStamp() + " " + msg.getSender() + "\n" + converted);
+
         LinearLayout.LayoutParams textViewParams = (LinearLayout.LayoutParams) chatBubble.getLayoutParams();
         textViewParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         textViewParams.width = 400;
-        textViewParams.topMargin = 50;
+        textViewParams.topMargin = 30;
+
+        //Check the owner of the message and adjust style and alignment accordingly
         if(msg.isOwnMessage()) {
 
+            chatBubble.setTextAppearance(R.style.own_chatbubble);
+            chatBubble.setBackgroundResource(R.drawable.chat_bubble_own);
             textViewParams.gravity = Gravity.RIGHT;
+            chatBubble.setLayoutParams(textViewParams);
 
         } else {
 
+            chatBubble.setTextAppearance(R.style.other_user_chatbubble);
+            chatBubble.setBackgroundResource(R.drawable.chat_bubble_others);
             textViewParams.gravity = Gravity.LEFT;
+            chatBubble.setLayoutParams(textViewParams);
         }
-        chatBubble.setLayoutParams(textViewParams);
-        chatBubble.setBackgroundResource(R.drawable.chat_bubble_others);
-
-        //convoWindow.append(converted);
 
         scrollDown();
     }
