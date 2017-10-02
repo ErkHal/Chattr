@@ -1,5 +1,6 @@
 package com.example.elitebook.chattr.ChatServerIO;
 
+import com.example.elitebook.chattr.ChatMessage.ChatMessage;
 import com.example.elitebook.chattr.MainActivity;
 
 import java.io.IOException;
@@ -67,7 +68,9 @@ public class ChatServerCommunicationHandler implements Runnable {
                         }
                     });
                     reader = new ConversationUpdater(System.in, mainActivity);
-                    reader.appendMessage("Cannot connect to host ! Please try again after a while or try another address and port number !");
+                    ChatMessage warning = new ChatMessage(null, null, "Cannot connect to host ! Please try again after a while" +
+                            " or try another address and port number !", true);
+                    reader.appendMessage(warning);
                     while(true) {}
                 }
 

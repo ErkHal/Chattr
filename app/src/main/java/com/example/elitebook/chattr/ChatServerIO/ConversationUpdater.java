@@ -1,5 +1,6 @@
 package com.example.elitebook.chattr.ChatServerIO;
 
+import com.example.elitebook.chattr.ChatMessage.ChatMessage;
 import com.example.elitebook.chattr.MainActivity;
 
 import java.io.InputStream;
@@ -27,24 +28,66 @@ public class ConversationUpdater implements Runnable {
      */
     public void run() {
 
-        while(updateRunning) {
+        while (updateRunning) {
 
             final String msg = reader.nextLine();
 
-            appendMessage(msg);
+            char separator = '£';
+
+            ChatMessage chatMessage;
+            boolean isOwnMessage = false;
+
+            if (msg.contains("" + separator)) {
+
+                String[] separatedMsg;
+
+                /*int firstSeparator = 0;
+                int secondSeparator = 0;
+
+                for (int firstIndex = 0; firstIndex < msg.length(); firstIndex++) {
+
+                    if (msg.charAt(firstIndex) == separator) {
+
+                        firstSeparator = firstIndex;
+
+                        for (int i = firstIndex; i < msg.length(); i++) {
+
+                            if (msg.charAt(i) == separator)
+                                secondSeparator = i;
+                            break;
+                        }
+                    }
+                } */
+
+                separatedMsg = msg.split("£", 3);
+
+                //Checks if the message sent from the server was originally sent by this user.
+                if(separatedMsg[1].equals("OWN_MESSAGE")) {
+                    isOwnMessage = true;
+                }
+
+                //The message is a user-sent message
+                chatMessage = new ChatMessage(separatedMsg[1], separatedMsg[0], separatedMsg[2], isOwnMessage);
+                appendMessage(chatMessage);
+
+            } else {
+
+                //The message printed is a system message
+                appendMessage(new ChatMessage(null, null, msg, true));
+            }
         }
     }
 
     /**
      * Appends the message to the conversation window using UI thread
-     * @param message
+     * @param msg The message to be displayed
      */
-    public void appendMessage(final String message) {
+    public void appendMessage(final ChatMessage msg) {
 
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mainActivity.appendMessageToConversation(message + "\r\n");
+                mainActivity.appendMessageToConversation(msg);
             }
         });
     }
