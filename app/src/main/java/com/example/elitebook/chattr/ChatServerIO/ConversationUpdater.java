@@ -1,5 +1,7 @@
 package com.example.elitebook.chattr.ChatServerIO;
 
+import android.widget.Toast;
+
 import com.example.elitebook.chattr.ChatMessage.ChatMessage;
 import com.example.elitebook.chattr.MainActivity;
 
@@ -30,40 +32,51 @@ public class ConversationUpdater implements Runnable {
 
         while (updateRunning) {
 
-            final String temp = reader.nextLine();
+            if (reader.hasNextLine()) {
+                final String temp = reader.nextLine();
 
-            final String msg = temp.trim();
+                final String msg = temp.trim();
 
-            if(!msg.isEmpty()) {
+                if (!msg.isEmpty()) {
 
-                char separator = '£';
+                    char separator = '£';
 
-                ChatMessage chatMessage;
-                boolean isOwnMessage = false;
+                    ChatMessage chatMessage;
+                    boolean isOwnMessage = false;
 
-                if (msg.contains("" + separator)) {
+                    if (msg.contains("" + separator)) {
 
-                    String[] separatedMsg;
+                        String[] separatedMsg;
 
-                    separatedMsg = msg.split("£", 3);
+                        separatedMsg = msg.split("£", 3);
 
-                    //Checks if the message sent from the server was originally sent by this user.
-                    if (separatedMsg[1].equals("OWN_MESSAGE")) {
-                        separatedMsg[1] = "You";
-                        isOwnMessage = true;
+                        //Checks if the message sent from the server was originally sent by this user.
+                        if (separatedMsg[1].equals("OWN_MESSAGE")) {
+                            separatedMsg[1] = "You";
+                            isOwnMessage = true;
+                        }
+
+                        separatedMsg[1] += " :";
+
+                        //Create the message
+                        chatMessage = new ChatMessage(separatedMsg[1], separatedMsg[0], separatedMsg[2], isOwnMessage);
+                        appendMessage(chatMessage);
+
+                    } else {
+
+                        //The message printed is a system message
+                        appendMessage(new ChatMessage("", "", msg, false));
                     }
-
-                    separatedMsg[1] += " :";
-
-                    //Create the message
-                    chatMessage = new ChatMessage(separatedMsg[1], separatedMsg[0], separatedMsg[2], isOwnMessage);
-                    appendMessage(chatMessage);
-
-                } else {
-
-                    //The message printed is a system message
-                    appendMessage(new ChatMessage("", "", msg, false));
                 }
+            } else {
+
+                Toast.makeText(mainActivity, "Connection to server closed", Toast.LENGTH_SHORT).show();
+                mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainActivity.shutdownConnection();
+                    }
+                });
             }
         }
     }

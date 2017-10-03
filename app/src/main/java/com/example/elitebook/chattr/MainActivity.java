@@ -138,4 +138,10 @@ public class MainActivity extends AppCompatActivity {
 
         sendMessageButton.setEnabled(false);
     }
+
+    public void shutdownConnection() {
+
+        this.finish();
+
+    }
 }

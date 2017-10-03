@@ -31,7 +31,6 @@ public class ChatServerCommunicationHandler implements Runnable {
 
     public ChatServerCommunicationHandler(MainActivity main, String ipAddr, int portNumber) {
 
-        this.setupDone = false;
         this.mainActivity = main;
 
         this.ipAddress = ipAddr;
@@ -44,9 +43,6 @@ public class ChatServerCommunicationHandler implements Runnable {
      */
     public void run() {
 
-        while(true) {
-
-            if(!setupDone) {
                 boolean connection = connectToServer();
                 if(connection) {
                     setupStreams();
@@ -57,8 +53,6 @@ public class ChatServerCommunicationHandler implements Runnable {
                     senderThread.start();
                     updaterThread.start();
 
-                    setupDone = true;
-
                 } else {
 
                     mainActivity.runOnUiThread(new Runnable() {
@@ -68,15 +62,11 @@ public class ChatServerCommunicationHandler implements Runnable {
                         }
                     });
                     reader = new ConversationUpdater(System.in, mainActivity);
-                    ChatMessage warning = new ChatMessage(null, null, "Cannot connect to host ! Please try again after a while" +
+                    ChatMessage warning = new ChatMessage("", "", "Cannot connect to host ! Please try again after a while" +
                             " or try another address and port number !", true);
                     reader.appendMessage(warning);
-                    while(true) {}
                 }
-
-            }
         }
-    }
 
     /**
      * Sends the message to MessageSender blocking Queue

@@ -10,8 +10,8 @@
     <!-- User input elements -->
     <ScrollView
         android:id="@+id/scrollViewForConversation"
-        android:layout_width="354dp"
-        android:layout_height="477dp"
+        android:layout_width="353dp"
+        android:layout_height="486dp"
         android:layout_gravity="center"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="7dp"
@@ -22,7 +22,9 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/messageBoxAndButtonConstraint">
+        app:layout_constraintBottom_toTopOf="@+id/messageBoxAndButtonConstraint"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintVertical_bias="0.529">
 
         <!-- Scrollable conversation window -->
 
@@ -39,7 +41,7 @@
         android:layout_width="356dp"
         android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="7dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
@@ -49,8 +51,8 @@
 
         <EditText
             android:id="@+id/messageBox"
-            android:layout_width="308dp"
-            android:layout_height="42dp"
+            android:layout_width="291dp"
+            android:layout_height="44dp"
             android:layout_marginBottom="11dp"
             android:layout_marginStart="16dp"
             android:background="@color/message_box__background"
@@ -67,7 +69,7 @@
 
         <Button
             android:id="@+id/sendButton"
-            android:layout_width="36dp"
+            android:layout_width="35dp"
             android:layout_height="31dp"
             android:layout_marginEnd="2dp"
             android:layout_marginLeft="8dp"
@@ -76,14 +78,13 @@
             android:background="@drawable/ic_send"
             android:elevation="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintLeft_toRightOf="@+id/messageBox"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="8dp"
-            app:layout_constraintVertical_bias="0.666" />
+            app:layout_constraintHorizontal_bias="0.0" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
