@@ -1,7 +1,5 @@
 package com.example.elitebook.chattr.ChatServerIO;
 
-import android.widget.Toast;
-
 import com.example.elitebook.chattr.ChatMessage.ChatMessage;
 import com.example.elitebook.chattr.MainActivity;
 
@@ -70,7 +68,6 @@ public class ConversationUpdater implements Runnable {
                 }
             } else {
 
-                Toast.makeText(mainActivity, "Connection to server closed", Toast.LENGTH_SHORT).show();
                 mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

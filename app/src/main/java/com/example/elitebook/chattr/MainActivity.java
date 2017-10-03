@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(msg.equals("!quit")) {
             onDestroy();
+            shutdownConnection();
         }
 
         chatHandler.sendMessageToQueue(msg);
