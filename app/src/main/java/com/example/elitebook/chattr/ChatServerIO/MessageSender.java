@@ -41,13 +41,19 @@ public class MessageSender implements Runnable {
 
         while(true) {
 
-            try {
-                String newestMessage = this.messageQueue.take();
-                sendMessage(newestMessage);
+            if (!Thread.interrupted()) {
 
-            } catch (InterruptedException i) {
-                Log.d(TAG, "ERROR WHILE ACCESSING MESSAGE BLOCKING QUEUE");
-                i.printStackTrace();
+                try {
+                    String newestMessage = this.messageQueue.take();
+                    sendMessage(newestMessage);
+
+                } catch (InterruptedException i) {
+                    Log.d(TAG, "Queue access error !");
+                    i.printStackTrace();
+                }
+            } else {
+
+                break;
             }
         }
     }

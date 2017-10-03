@@ -30,50 +30,55 @@ public class ConversationUpdater implements Runnable {
 
         while (updateRunning) {
 
-            if (reader.hasNextLine()) {
-                final String temp = reader.nextLine();
+            if (!Thread.interrupted()) {
 
-                final String msg = temp.trim();
+                if (reader.hasNextLine()) {
+                    final String temp = reader.nextLine();
 
-                if (!msg.isEmpty()) {
+                    final String msg = temp.trim();
 
-                    char separator = '£';
+                    if (!msg.isEmpty()) {
 
-                    ChatMessage chatMessage;
-                    boolean isOwnMessage = false;
+                        char separator = '£';
 
-                    if (msg.contains("" + separator)) {
+                        ChatMessage chatMessage;
+                        boolean isOwnMessage = false;
 
-                        String[] separatedMsg;
+                        if (msg.contains("" + separator)) {
 
-                        separatedMsg = msg.split("£", 3);
+                            String[] separatedMsg;
 
-                        //Checks if the message sent from the server was originally sent by this user.
-                        if (separatedMsg[1].equals("OWN_MESSAGE")) {
-                            separatedMsg[1] = "You";
-                            isOwnMessage = true;
+                            separatedMsg = msg.split("£", 3);
+
+                            //Checks if the message sent from the server was originally sent by this user.
+                            if (separatedMsg[1].equals("OWN_MESSAGE")) {
+                                separatedMsg[1] = "You";
+                                isOwnMessage = true;
+                            }
+
+                            separatedMsg[1] += " :";
+
+                            //Create the message
+                            chatMessage = new ChatMessage(separatedMsg[1], separatedMsg[0], separatedMsg[2], isOwnMessage);
+                            appendMessage(chatMessage);
+
+                        } else {
+
+                            //The message printed is a system message
+                            appendMessage(new ChatMessage("", "", msg, false));
                         }
-
-                        separatedMsg[1] += " :";
-
-                        //Create the message
-                        chatMessage = new ChatMessage(separatedMsg[1], separatedMsg[0], separatedMsg[2], isOwnMessage);
-                        appendMessage(chatMessage);
-
-                    } else {
-
-                        //The message printed is a system message
-                        appendMessage(new ChatMessage("", "", msg, false));
                     }
+                } else {
+
+                    mainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mainActivity.quit();
+                        }
+                    });
                 }
             } else {
-
-                mainActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mainActivity.shutdownConnection();
-                    }
-                });
+                break;
             }
         }
     }

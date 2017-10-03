@@ -4,6 +4,8 @@
     <string name="connect_button">GO</string>
     <string name="welcome_text">WELCOME TO CHATTR\n\n Please, input the IP and port
 number of the chat server</string>
+    <string name="ip_addr_hint">IP address</string>
+    <string name="port_number_hint">Port Number</string>
     <string name="server_ip_address">temp</string>
     <string name="server_port_number">temp</string>
 </resources>

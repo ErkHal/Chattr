@@ -30,13 +30,39 @@ public class selectServerActivity extends AppCompatActivity {
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendServerInfo();
+                sendServerInfoAndQuit();
             }
         });
 
     }
 
-    private void sendServerInfo() {
+    @Override
+    protected void onStart() {
+
+        Log.d("kissa", "Activity starting again !");
+        super.onStart();
+
+        setContentView(R.layout.activity_select_server);
+
+
+        goButton = (Button) findViewById(R.id.go_button);
+        ipAddressField = (EditText) findViewById(R.id.ip_address);
+        portNumberField = (EditText) findViewById(R.id.port_number);
+
+        goButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendServerInfoAndQuit();
+            }
+        });
+
+
+    }
+
+    /**
+     * Register extras and close this activity and start the chat Activity
+     */
+    private void sendServerInfoAndQuit() {
 
         String ipAddress = String.valueOf(ipAddressField.getText().toString());
         int portNumber = Integer.parseInt(portNumberField.getText().toString());
@@ -46,5 +72,19 @@ public class selectServerActivity extends AppCompatActivity {
         backToMainIntent.putExtra("IP_ADDRESS", ipAddress);
         backToMainIntent.putExtra("PORT_NUMBER", portNumber);
         startActivity(backToMainIntent);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Log.d("kissa", "Activity stopping !!!");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.d("kissa", "Activity Resuming !!");
     }
 }

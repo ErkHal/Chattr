@@ -27,7 +27,8 @@ public class ChatServerCommunicationHandler implements Runnable {
 
     MainActivity mainActivity;
 
-    boolean setupDone;
+    private Thread senderThread;
+    private Thread updaterThread;
 
     public ChatServerCommunicationHandler(MainActivity main, String ipAddr, int portNumber) {
 
@@ -43,24 +44,32 @@ public class ChatServerCommunicationHandler implements Runnable {
      */
     public void run() {
 
+                mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mainActivity.disableSendButton();
+            }
+        });
+
                 boolean connection = connectToServer();
                 if(connection) {
                     setupStreams();
 
-                    Thread senderThread = new Thread(sender);
-                    Thread updaterThread = new Thread(reader);
+                    senderThread = new Thread(sender);
+                    updaterThread = new Thread(reader);
 
                     senderThread.start();
                     updaterThread.start();
 
-                } else {
-
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mainActivity.disableSendButton();
+                            mainActivity.enableSendButton();
                         }
                     });
+
+                } else {
+
                     reader = new ConversationUpdater(System.in, mainActivity);
                     ChatMessage warning = new ChatMessage("", "", "Cannot connect to host ! Please try again after a while" +
                             " or try another address and port number !", true);
@@ -105,5 +114,14 @@ public class ChatServerCommunicationHandler implements Runnable {
         } catch(IOException io) {
             io.printStackTrace();
         }
+    }
+
+    /**
+     * Sends interrupts to I/O Threads
+     */
+    public void stop() {
+
+        senderThread.interrupt();
+        updaterThread.interrupt();
     }
 }

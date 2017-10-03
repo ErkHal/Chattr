@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.elitebook.chattr.ChatMessage.ChatMessage;
 import com.example.elitebook.chattr.ChatServerIO.ChatServerCommunicationHandler;
@@ -26,13 +27,15 @@ public class MainActivity extends AppCompatActivity {
     ChatServerCommunicationHandler chatHandler;
     ScrollView scrollView;
 
+    boolean exitConfirmationDisplayed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         Intent intent = getIntent();
-        Log.d("address", intent.toString());
         //Retrieve Extra data passed from the server selection activity
         String ipAddress = intent.getStringExtra("IP_ADDRESS");
         int portNumber = intent.getIntExtra("PORT_NUMBER", 1337);
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                exitConfirmationDisplayed = false;
                 String message = messageBox.getText().toString();
                 String converted = StringEscapeUtils.escapeJava(message);
                 sendMessageToHandler(converted);
@@ -63,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         //Initialize Handler thread for setting up I/O and server connection
         Thread handlerThread = new Thread(chatHandler);
         handlerThread.start();
+
+        exitConfirmationDisplayed = false;
 
     }
 
@@ -110,8 +116,7 @@ public class MainActivity extends AppCompatActivity {
     public void sendMessageToHandler(String msg) {
 
         if(msg.equals("!quit")) {
-            onDestroy();
-            shutdownConnection();
+            quit();
         }
 
         chatHandler.sendMessageToQueue(msg);
@@ -133,15 +138,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Disables the send button if connection wasn't acquired
+     * Disables the send button when connection isn't acquired
      */
     public void disableSendButton() {
 
         sendMessageButton.setEnabled(false);
     }
 
-    public void shutdownConnection() {
+    /**
+     * Enables the send button when connection is acquired
+     */
+    public void enableSendButton() {
 
+        sendMessageButton.setEnabled(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(!exitConfirmationDisplayed) {
+
+            Toast.makeText(this, "Press back button again to exit", Toast.LENGTH_SHORT).show();
+            exitConfirmationDisplayed = true;
+
+        } else {
+
+            sendMessageToHandler("!quit");
+        }
+    }
+
+    /**
+     *Stops the threads and finishes this activity, returning to SelectServerActivity
+     */
+    public void quit() {
+
+        chatHandler.stop();
         this.finish();
 
     }

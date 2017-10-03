@@ -13,6 +13,7 @@
 
     <!--Other User Chat bubble style -->
     <style name="other_user_chatbubble" parent="android:Theme.NoTitleBar">
+        <item name="android:elevation">8dp</item>
         <item name="android:radius">5dp</item>
         <item name="android:background">@drawable/chat_bubble_others</item>
         <item name="android:paddingLeft">10dp</item>
@@ -25,6 +26,7 @@
 
     <!-- Own chat bubble -->
     <style name="own_chatbubble" parent="android:Theme.NoTitleBar">
+        <item name="android:elevation">8dp</item>
         <item name="android:radius">5dp</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
