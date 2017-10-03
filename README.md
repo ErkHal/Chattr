@@ -12,4 +12,4 @@ Features so far:
   - Command for fetching the whole chat history of a channel
   - See who's online
 
-![](https://i.gyazo.com/23ccead21f3954be1067a4885629ee2d.png)
+![](https://i.gyazo.com/03c433aa0acb99760b0f4f72b152526c.png)
