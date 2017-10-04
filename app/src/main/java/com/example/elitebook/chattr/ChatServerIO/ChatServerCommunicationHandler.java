@@ -25,7 +25,7 @@ public class ChatServerCommunicationHandler implements Runnable {
     private String ipAddress;
     private int portNumber;
 
-    MainActivity mainActivity;
+    private MainActivity mainActivity;
 
     private Thread senderThread;
     private Thread updaterThread;
@@ -65,6 +65,7 @@ public class ChatServerCommunicationHandler implements Runnable {
                         @Override
                         public void run() {
                             mainActivity.enableSendButton();
+                            mainActivity.setNotConnected(false);
                         }
                     });
 

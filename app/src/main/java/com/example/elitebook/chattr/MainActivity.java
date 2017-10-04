@@ -22,12 +22,14 @@ import org.apache.commons.lang3.StringEscapeUtils;
 public class MainActivity extends AppCompatActivity {
 
     //Chat box, message box and button
-    EditText messageBox;
-    Button sendMessageButton;
-    ChatServerCommunicationHandler chatHandler;
-    ScrollView scrollView;
+    private EditText messageBox;
+    private Button sendMessageButton;
+    private ChatServerCommunicationHandler chatHandler;
+    private ScrollView scrollView;
 
-    boolean exitConfirmationDisplayed;
+    private boolean exitConfirmationDisplayed;
+
+    private boolean notConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         handlerThread.start();
 
         exitConfirmationDisplayed = false;
+        notConnected = true;
 
     }
 
@@ -163,7 +166,13 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
 
-            sendMessageToHandler("!quit");
+            if(notConnected) {
+
+                this.finish();
+            } else {
+
+                sendMessageToHandler("!quit");
+            }
         }
     }
 
@@ -175,5 +184,10 @@ public class MainActivity extends AppCompatActivity {
         chatHandler.stop();
         this.finish();
 
+    }
+
+    public void setNotConnected(boolean state) {
+
+        this.notConnected = state;
     }
 }
